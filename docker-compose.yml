@@ -1,0 +1,38 @@
+version: "3"
+
+services:
+  web:
+    build:
+      context: noname-web
+      # dockerfile: Dockerfile
+    deploy:
+      replicas: 1
+    depends_on:
+      - api
+    volumes:
+      - ./noname-web:/opt/web
+      - ./settings.json:/opt/web/settings.json
+      - ./noname-ui/build:/opt/web/static
+    networks:
+      - noname-network
+    ports:
+      - 5000:5000
+    environment:
+      - FLASK_ENV=development
+  api:
+    build:
+      context: noname-api
+      # dockerfile: Dockerfile
+    deploy:
+      replicas: 1
+    volumes:
+      - ./noname-api:/opt/api
+      - ./settings.json:/opt/api/settings.json
+    networks:
+      - noname-network
+    environment:
+      - FLASK_ENV=development
+
+networks:
+  noname-network:
+    external: true
