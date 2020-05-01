@@ -60,6 +60,19 @@ services:
     networks:
       - noname-network
 
+  database-initialize:
+    build:
+      context: noname-initialize
+      # dockerfile: Dockerfile
+    depends_on:
+      - database-mongo
+    volumes:
+      - ./noname-initialize:/opt/initialize
+      - ./settings.json:/opt/initialize/settings.json
+    networks:
+      - noname-network
+    command: sh /opt/initialize/all.sh
+
 networks:
   noname-network:
     external: true
