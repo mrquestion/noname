@@ -25,6 +25,9 @@ services:
       # dockerfile: Dockerfile
     deploy:
       replicas: 1
+    depends_on:
+      - redis
+      - database-mongo
     volumes:
       - ./noname-api:/opt/api
       - ./settings.json:/opt/api/settings.json
@@ -32,6 +35,30 @@ services:
       - noname-network
     environment:
       - FLASK_ENV=development
+
+  database-mongo:
+    image: mongo:latest
+    volumes:
+      - ./noname-initialize:/opt/initialize
+    networks:
+      - noname-network
+  database-mongo-express:
+    image: mongo-express:latest
+    depends_on:
+      - database-mongo
+    networks:
+      - noname-network
+    ports:
+      - 8081:8081
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=database-mongo
+
+  redis:
+    image: redis:latest
+    deploy:
+      replicas: 1
+    networks:
+      - noname-network
 
 networks:
   noname-network:

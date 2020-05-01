@@ -12,3 +12,4 @@ if os.path.exists(_setting_filename):
   _settings.update(json.load(open(_setting_filename, "r")))
 
 version = "1.0.0"
+database_mongo = _settings.get("database-mongo", {})
