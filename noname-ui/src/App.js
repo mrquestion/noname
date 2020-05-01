@@ -1,24 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useEffect, useRef, useState } from 'react';
+
 import './App.css';
 
+import bent from 'bent';
+
 function App() {
+  const api = {
+    head: bent(window.location.origin, 'json', 'HEAD'),
+    put: bent(window.location.origin, 'json', 'PUT'),
+    post: bent(window.location.origin, 'json', 'POST'),
+    get: bent(window.location.origin, 'json', 'GET'),
+    patch: bent(window.location.origin, 'json', 'PATCH'),
+    delete: bent(window.location.origin, 'json', 'DELETE'),
+  };
+
+  useEffect(() => {
+    api.get('/api/v1/version').then(({ error, version }) => {
+      console.log('API version:', version)
+    });
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container-fluid">
+      <div className="row">
+        <div className="col col-12">
+          noname
+        </div>
+      </div>
     </div>
   );
 }

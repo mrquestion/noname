@@ -11,6 +11,12 @@ server.secret_key = settings.secret_key
 def index(*args, **kwargs):
   return server.send_static_file("index.html")
 
+@server.route("/index.html")
+@server.route("/favicon.ico")
+@server.route("/manifest.json")
+def static_files():
+  return server.send_static_file(flask.request.path[1:])
+
 @server.route("/api/v<int:version>/<path:path>", methods=[ "HEAD", "PUT", "POST", "GET", "PATCH", "DELETE" ])
 def api(version, path):
   request_data = {}
